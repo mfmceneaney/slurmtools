@@ -39,12 +39,14 @@ with open(ORIGINALFILENAME) as f:
 submitted_jobs_rev = {submitted_jobs[i]:submitted_scripts[i] for i in range(len(submitted_jobs))}
 
 # Load list of jobs to resubmit
-#NOTE: Assumes that this file contains a list of slurm PIDs separated by commas ',' or newlines
+#NOTE: Assumes that this file contains a list of slurm PIDs separated by commas ',' or listed as second space ' ' separated entry on line, or newlines
 jobs_to_resubmit = []
 with open(FILENAME) as f:
     for line in f:
         if ',' in line:
             jobs_to_resubmit.extend([int(el) for el in line.split(',')])
+        elif ' ' in line:
+            jobs_to_resubmit.append(int(line.split(' ')[-1]))
         elif len(line)>1:
             jobs_to_resubmit.append(int(line.replace('\n','')))
 print("DEBUGGING: jobs_to_resubmit = ",jobs_to_resubmit)

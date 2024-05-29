@@ -20,6 +20,8 @@ slurm_pids=($(grep -Eo '[0-9]{8}' $FILENAME))
 touch timeout_jobs.txt
 touch fail_jobs.txt
 touch node_fail_jobs.txt
+touch cancelled_jobs.txt
+touch out_of_memory_jobs.txt
 touch running_jobs.txt
 touch completed_jobs.txt
 
@@ -35,6 +37,8 @@ output=`seff ${slurm_pids[$i]}`
 output_timeout=`echo ${output} | grep TIMEOUT`
 output_failed=`echo ${output} | grep FAILED`
 output_node_fail=`echo ${output} | grep NODE_FAIL`
+output_cancelled=`echo ${output} | grep CANCELLED`
+output_out_of_memory=`echo ${output} | grep OUT_OF_MEMORY`
 output_completed=`echo ${output} | grep COMPLETED`
 output_running=`echo ${output} | grep RUNNING`
 echo $output
@@ -48,6 +52,12 @@ echo
 echo output_node_fail
 echo $output_node_fail
 echo
+echo output_cancelled
+echo $output_cancelled
+echo
+echo output_out_of_memory
+echo $output_out_of_memory
+echo
 if [ -n "$output_timeout" ]; then #NOTE: THE QUOTES HERE ARE NECESSARY!
     echo $i ${slurm_pids[$i]} >> timeout_jobs.txt
 fi
@@ -56,6 +66,12 @@ if [ -n "$output_fail" ]; then
 fi
 if [ -n "$output_node_fail" ]; then
     echo $i ${slurm_pids[$i]} >> node_fail_jobs.txt
+fi
+if [ -n "$output_cancelled" ]; then
+    echo $i ${slurm_pids[$i]} >> cancelled_jobs.txt
+fi
+if [ -n "$output_out_of_memory" ]; then
+    echo $i ${slurm_pids[$i]} >> out_of_memory_jobs.txt
 fi
 if [ -n "$output_running" ]; then
     echo $i ${slurm_pids[$i]} >> running_jobs.txt

@@ -59,6 +59,8 @@ for counter, slurm_pid in enumerate(jobs_to_resubmit):
     els = message.split(' ')
     submit_path_i = els[-1].replace('\n','')
     counter = els[0]
+    if not submit_path_i.endswith('sh'):
+        submit_path_i = 'submit'+els[0]'.sh' #NOTE: This assumes you are in the job directory and the submit files are named `submit<job index>.sh`
 
     # Submit jobs
     command = 'echo \''+str(counter)+' sbatch '+os.path.abspath(submit_path_i)+'\' >> '+out_path+'; '

@@ -18,11 +18,11 @@ if len(sys.argv) > 1:
     ORIGINALFILENAME=sys.argv[2]
     print('Checking',FILENAME,'against',ORIGINALFILENAME)
 else:
-    print('Usage:',os.path.basename(sys.argv[0]),'<filename> <original filename>')
+    print('Usage:',os.path.basename(sys.argv[0]),'<error filename> <original filename>')
     sys.exit(0)
 
 # Set the output file
-out_path="resubmitted_"+ORIGINALFILENAME
+out_path="resubmitted_"+FILENAME
 print('Outputting to ',os.path.abspath(out_path))
 
 # Load complete log of already submitted jobs

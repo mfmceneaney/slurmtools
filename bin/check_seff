@@ -22,6 +22,7 @@ touch fail_jobs.txt
 touch node_fail_jobs.txt
 touch cancelled_jobs.txt
 touch out_of_memory_jobs.txt
+touch preempted_jobs.txt
 touch running_jobs.txt
 touch completed_jobs.txt
 
@@ -39,6 +40,7 @@ output_failed=`echo ${output} | grep FAILED`
 output_node_fail=`echo ${output} | grep NODE_FAIL`
 output_cancelled=`echo ${output} | grep CANCELLED`
 output_out_of_memory=`echo ${output} | grep OUT_OF_MEMORY`
+output_preempted=`echo ${output} | grep PREEMPTED`
 output_completed=`echo ${output} | grep COMPLETED`
 output_running=`echo ${output} | grep RUNNING`
 echo $output
@@ -58,6 +60,9 @@ echo
 echo output_out_of_memory
 echo $output_out_of_memory
 echo
+echo output_preempted
+echo $output_preempted
+echo
 if [ -n "$output_timeout" ]; then #NOTE: THE QUOTES HERE ARE NECESSARY!
     echo $i ${slurm_pids[$i]} >> timeout_jobs.txt
 fi
@@ -72,6 +77,9 @@ if [ -n "$output_cancelled" ]; then
 fi
 if [ -n "$output_out_of_memory" ]; then
     echo $i ${slurm_pids[$i]} >> out_of_memory_jobs.txt
+fi
+if [ -n "$output_preempted" ]; then
+    echo $i ${slurm_pids[$i]} >> preempted_jobs.txt
 fi
 if [ -n "$output_running" ]; then
     echo $i ${slurm_pids[$i]} >> running_jobs.txt

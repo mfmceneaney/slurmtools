@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+
+# Script to resubmit by user job submission order number all jobs in log file.
+# Accepts file name as argument.
+# The log files you pass this should have the submit script path and absolute 
+# submission order number on one line followed by the sbatch output on the following line.
+
+import sys
+import os
+import subprocess
+
+# Check arguments
+FILENAME="timeout_jobs.txt"
+ORIGINALFILENAME="jobs.txt"
+NEWFILENAME="resubmitted_"+ORIGINALFILENAME
+if len(sys.argv) > 1:
+    FILENAME=sys.argv[1]
+    ORIGINALFILENAME=sys.argv[2]
+    print('Checking',FILENAME,'against',ORIGINALFILENAME)
+else:
+    print('Usage:',os.path.basename(sys.argv[0]),'<filename> <original filename>')
+    sys.exit(0)
+
+# Set the output file
+out_path="resubmitted_"+ORIGINALFILENAME
+print('Outputting to ',os.path.abspath(out_path))
+
+# Load complete log of already submitted jobs
+#NOTE: Read in text file and split line by line by selecting
+# every other line with sbatch message or os separator sbatch in it.
+submitted_jobs = []
+submitted_scripts = []
+with open(ORIGINALFILENAME) as f:
+    for line in f:
+        if 'Submitted batch job' in line:
+            submitted_jobs.append(int(line.split(' ')[-1]))
+        elif os.sep in line or 'sbatch ' in line:
+            submitted_scripts.append(line)
+submitted_jobs_rev = {submitted_jobs[i]:submitted_scripts[i] for i in range(len(submitted_jobs))}
+
+# Load list of jobs to resubmit
+#NOTE: Assumes that this file contains a list of slurm PIDs separated by commas ',' or newlines
+jobs_to_resubmit = []
+with open(FILENAME) as f:
+    for line in f:
+        if ',' in line:
+            jobs_to_resubmit.extend([int(el) for el in line.split(',')])
+        elif len(line)>1:
+            jobs_to_resubmit.append(int(line.replace('\n','')))
+print("DEBUGGING: jobs_to_resubmit = ",jobs_to_resubmit)
+
+# Loop jobs and resubmit
+for counter, slurm_pid in enumerate(jobs_to_resubmit):
+
+    # Split job info lines which should be `<job index> sbatch <filename>`
+    message = submitted_jobs_rev[slurm_pid]
+    els = message.split(' ')
+    submit_path_i = els[-1].replace('\n','')
+    counter = els[0]
+
+    # Submit jobs
+    command = 'echo \''+str(counter)+' sbatch '+os.path.abspath(submit_path_i)+'\' >> '+out_path+'; '
+    command = command+'sbatch '+os.path.abspath(submit_path_i)+' >> '+out_path
+    print(command)
+    # subprocess.run(command, shell=True, check=True, text=True)
+
+print('DONE')

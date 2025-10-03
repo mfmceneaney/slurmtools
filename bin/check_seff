@@ -66,7 +66,7 @@ echo
 if [ -n "$output_timeout" ]; then #NOTE: THE QUOTES HERE ARE NECESSARY!
     echo $i ${slurm_pids[$i]} >> timeout_jobs.txt
 fi
-if [ -n "$output_fail" ]; then
+if [ -n "$output_failed" ]; then
     echo $i ${slurm_pids[$i]} >> fail_jobs.txt
 fi
 if [ -n "$output_node_fail" ]; then

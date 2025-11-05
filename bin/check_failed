@@ -23,9 +23,9 @@ while [ $i -lt $n ];
 do
 
 echo PID ${slurm_pids[$i]}
-command="grep Could not run data processing /farm_out/$USER/*${slurm_pids[$i]}*.out"
+command="grep Could not run data processing ~/.slurmtools_farmout/$USER/*${slurm_pids[$i]}*.out"
 echo "COMMAND: $command"
-grep 'Could not run data processing' /farm_out/$USER/*${slurm_pids[$i]}*.out
+grep 'Could not run data processing' ~/.slurmtools_farmout/$USER/*${slurm_pids[$i]}*.out
  
 i=$(($i+1))
 done

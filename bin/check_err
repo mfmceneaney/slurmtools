@@ -24,7 +24,7 @@ do
 
 echo PID ${slurm_pids[$i]}
 echo "COMMAND: tail ~/.slurmtools_farmout/*${slurm_pids[$i]}*.err"
-tail ~/.slurmtools_farmout/$USER/*${slurm_pids[$i]}*.err
+tail $SLURMTOOLS_OUTDIR/*${slurm_pids[$i]}*.err
  
 i=$(($i+1))
 done

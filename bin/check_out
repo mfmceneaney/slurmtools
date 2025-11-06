@@ -23,7 +23,7 @@ while [ $i -lt $n ];
 do
 
 echo PID ${slurm_pids[$i]}
-echo "COMMAND: tail ~/.slurmtools_farmout/$USER/*${slurm_pids[$i]}*.out"
+echo "COMMAND: tail $SLURMTOOLS_OUTDIR/*${slurm_pids[$i]}*.out"
 tail ~/.slurmtools_farmout/*${slurm_pids[$i]}*.out
  
 i=$(($i+1))

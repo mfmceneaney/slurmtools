@@ -8,9 +8,10 @@ Clone the repository:
 ```bash
 git clone https://github.com/mfmceneaney/slurmtools.git
 ```
-Create a link to your jobs stdout and stderr directory:
+Set the path to your jobs stdout and stderr directory in a file called `env.txt`
+in the root of this repo.
 ```bash
-ln -s /path/to/stdout/directory ~/.slurmtools_farmout
+SLURMTOOLS_OUTDIR=/path/to/slurmtools/outdir
 ```
 Add the following to your startup script
 ```bash

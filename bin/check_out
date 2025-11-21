@@ -24,7 +24,7 @@ do
 
 echo PID ${slurm_pids[$i]}
 echo "COMMAND: tail $SLURMTOOLS_OUTDIR/*${slurm_pids[$i]}*.out"
-tail $SLURMTOOLS_OUTDIR//*${slurm_pids[$i]}*.out
+tail $SLURMTOOLS_OUTDIR/*${slurm_pids[$i]}*.out
  
 i=$(($i+1))
 done

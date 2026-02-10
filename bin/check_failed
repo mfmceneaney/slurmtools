@@ -14,7 +14,7 @@ else
     exit 0
 fi
 
-slurm_pids=($(grep -Eo 'Submitted batch job [0-9]{8}' $FILENAME | grep -Eo '[0-9]{8}'))
+slurm_pids=($(grep -Eo '^.* [0-9]{8}' $FILENAME | grep -Eo '[0-9]{8}'))
 #echo ${slurm_pids[*]} #NOTE: Print entire array.
 #echo ${#slurm_pids[@]} #NOTE: Print length of array.
 n=${#slurm_pids[@]}

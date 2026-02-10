@@ -15,7 +15,7 @@ else
 fi
 
 # Get SLURM PIDs as list                                                                                                                                                   
-slurm_pids=($(grep -Eo '[0-9]{8}' $FILENAME))
+slurm_pids=($(grep -Eo 'Submitted batch job [0-9]{8}' $FILENAME | grep -Eo '[0-9]{8}'))
 #echo ${slurm_pids[*]} #NOTE: Print entire array
 touch efficiencies.txt
 echo "i completed timeout fail node_fail cpu_used cpu_efficiency mem_used mem_efficiency" >> efficiencies.txt
